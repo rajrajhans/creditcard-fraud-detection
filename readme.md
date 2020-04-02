@@ -96,16 +96,13 @@ Y = data[target]    #Y is a 1D array which has all the labels for the data
 Here, we are stripping away the  "Class" column from our data as we don't want to feed the labels to our unsupervised algorithm.
 
 ## Unsupervised Outlier Detection
-#### Local Outlier Factor
-The anomaly score of each sample is called Local Outlier Factor. It measures the local deviation of density of a given sample with respect to its neighbors. It is local in that the anomaly score depends on how isolated the object is with respect to the surrounding neighborhood.
-#### Isolation Forest Algorithm
-The IsolationForest ‘isolates’ observations by randomly selecting a feature and then randomly selecting a split value between the maximum and minimum values of the selected feature.
-
-Since recursive partitioning can be represented by a tree structure, the number of splittings required to isolate a sample is equivalent to the path length from the root node to the terminating node. This path length, averaged over a forest of such random trees, is a measure of normality and our decision function.
+Algorithms Used -
+1. Anamoly Detection Using Local Outlier Factor
+2. Isolation Forest Algorithm
 
 #### Results
 ```
-Isolation Forest 
+1. Isolation Forest 
 
 Number of errors - 668 / 284315
 Accuracy for  Isolation Forest is  0.9976545520299712
@@ -119,7 +116,7 @@ weighted avg       1.00      1.00      1.00    284807
 ```
 
 ```
-Local Outlier Factor
+2. Local Outlier Factor
 
 Number of errors - 934 / 284315
 Accuracy for  Local Outlier Factor is  0.9967205862215465
