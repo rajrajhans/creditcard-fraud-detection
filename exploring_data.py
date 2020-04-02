@@ -6,7 +6,6 @@ import seaborn as sns
 #loading the dataset
 data = pd.read_csv('creditcard.csv')
 
-"""
 #exploring the dataset
 print("Columns in dataset -  ", data.columns)
 print(data.shape())
@@ -23,7 +22,7 @@ valid = data[data['Class']==0]
 print("Number of fraud transactions- ", len(fraud))
 print("Number of valid transactions- ", len(valid))
 print("Ratio of fraudulent transactions- ", len(fraud) / (len(fraud) + len(valid)))
-"""
+
 
 corrmat = data.corr()
 fig = plt.figure(figsize=(12,9))

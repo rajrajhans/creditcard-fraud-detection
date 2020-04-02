@@ -2,14 +2,16 @@
 
 basically a anamoly detection project 
 
-two machine learning algorithms: Local Outlier Factor (LOF) & Isolation Forest Algorithm
+Two machine learning algorithms: Local Outlier Factor (LOF) & Isolation Forest Algorithm
 
+Anamoly Detection, Unsupervised learning
+    
 ## Exploring the dataset
 
 Dataset used - [Credit Card Fraud Detection dataset on Kaggle](https://www.kaggle.com/mlg-ulb/creditcardfraud/version/3)
 
 Loading the dataset as a pandas dataframe -
-```python
+```
 import pandas as pd
 data = pd.read_csv('creditcard.csv')
 ```
@@ -56,12 +58,12 @@ Let's plot a histogram for our data using
 As we can see from the histogram, the number of fraudulent transactions(Class label = 1) is very low. Let's find out the exact number and the ratio.
 
 ```
->>>fraud = data[data['Class']==1] #returns array of transactions labeled 1 (fraud)
->>>valid = data[data['Class']==0]#returns array of transactions labeled 0 (valid)
+>>> fraud = data[data['Class']==1] #returns array of transactions labeled 1 (fraud)
+>>> valid = data[data['Class']==0]#returns array of transactions labeled 0 (valid)
 
->>>print("Number of fraud transactions- ", len(fraud))
->>>print("Number of valid transactions- ", len(valid))
->>>print("Ratio of fraudulent transactions- ", len(fraud)/(len(fraud)+len(valid)))
+>>> print("Number of fraud transactions- ", len(fraud))
+>>> print("Number of valid transactions- ", len(valid))
+>>> print("Ratio of fraudulent transactions- ", len(fraud)/(len(fraud)+len(valid)))
 ```
 
 ```
@@ -75,8 +77,58 @@ So we can see that just 0.17% of the total transactions are fraudulent, i.e. jus
 Now, we will build a correlation matrix to see if there's any strong correlation between the features in our database. It'll tell us if there are any linear relationship in our data that we can use further to predict. We'll also find out what features in our data are important. We'll plot the correlation matrix and also use seaborn to convert it into a heatmap.
 
 ```
-corrmat = data.corr()   
-sns.heatmap(corrmat, square=True)
+>>> corrmat = data.corr()   
+>>> sns.heatmap(corrmat, square=True)
 ```
 ![heatmap](heatmap.png)
-We can observe   
+
+We don't see many one to one correlations here in the correlation matrix, so we dont need to pull out any columns before we dive in. We can also observe that there is no relation between time / amount of the transaction to whether it is fraudulent or not. 
+## Data Preprocessing 
+Before we actually get started, we need to format our dataset a little.
+
+```
+columns = data.columns.to_list()
+columns = [c for c in columns if c not in ["Class"]]
+target = "Class"
+X = data[columns]   #X is everything except the class labels
+Y = data[target]    #Y is a 1D array which has all the labels for the data
+```
+Here, we are stripping away the  "Class" column from our data as we don't want to feed the labels to our unsupervised algorithm.
+
+## Unsupervised Outlier Detection
+#### Local Outlier Factor
+The anomaly score of each sample is called Local Outlier Factor. It measures the local deviation of density of a given sample with respect to its neighbors. It is local in that the anomaly score depends on how isolated the object is with respect to the surrounding neighborhood.
+#### Isolation Forest Algorithm
+The IsolationForest ‘isolates’ observations by randomly selecting a feature and then randomly selecting a split value between the maximum and minimum values of the selected feature.
+
+Since recursive partitioning can be represented by a tree structure, the number of splittings required to isolate a sample is equivalent to the path length from the root node to the terminating node.
+
+This path length, averaged over a forest of such random trees, is a measure of normality and our decision function.
+
+Random partitioning produces noticeably shorter paths for anomalies. Hence, when a forest of random trees collectively produce shorter path lengths for particular samples, they are highly likely to be anomalies.
+
+#### Results
+```
+Isolation Forest 
+
+Number of errors - 668 / 284315
+Accuracy for  Isolation Forest is  0.9976545520299712
+Classification Report for  Isolation Forest - 
+              precision    recall  f1-score   support
+           0       1.00      1.00      1.00    284315
+           1       0.32      0.32      0.32       492
+    accuracy                           1.00    284807
+   macro avg       0.66      0.66      0.66    284807
+weighted avg       1.00      1.00      1.00    284807
+
+Local Outlier Factor
+
+Number of errors - 934 / 284315
+Accuracy for  Local Outlier Factor is  0.9967205862215465
+Classification Report for  Local Outlier Factor - 
+              precision    recall  f1-score   support
+           0       1.00      1.00      1.00    284315
+           1       0.05      0.05      0.05       492
+    accuracy                           1.00    284807
+   macro avg       0.52      0.52      0.52    284807
+weighted avg       1.00      1.00      1.00    284807```
