@@ -116,7 +116,9 @@ Classification Report for  Isolation Forest -
     accuracy                           1.00    284807
    macro avg       0.66      0.66      0.66    284807
 weighted avg       1.00      1.00      1.00    284807
+```
 
+```
 Local Outlier Factor
 
 Number of errors - 934 / 284315
