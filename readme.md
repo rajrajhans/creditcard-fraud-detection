@@ -101,11 +101,7 @@ The anomaly score of each sample is called Local Outlier Factor. It measures the
 #### Isolation Forest Algorithm
 The IsolationForest ‘isolates’ observations by randomly selecting a feature and then randomly selecting a split value between the maximum and minimum values of the selected feature.
 
-Since recursive partitioning can be represented by a tree structure, the number of splittings required to isolate a sample is equivalent to the path length from the root node to the terminating node.
-
-This path length, averaged over a forest of such random trees, is a measure of normality and our decision function.
-
-Random partitioning produces noticeably shorter paths for anomalies. Hence, when a forest of random trees collectively produce shorter path lengths for particular samples, they are highly likely to be anomalies.
+Since recursive partitioning can be represented by a tree structure, the number of splittings required to isolate a sample is equivalent to the path length from the root node to the terminating node. This path length, averaged over a forest of such random trees, is a measure of normality and our decision function.
 
 #### Results
 ```
